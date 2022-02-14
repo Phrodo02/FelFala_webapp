@@ -28,7 +28,7 @@ module.exports = {
     withDefaults: "readonly",
   },
   rules: {
-    "sort-imports": ["error", { ignoreCase: true }],
+    // "sort-imports": ["error", { ignoreCase: true }],
     "vue/attributes-order": ["error", { alphabetical: true }],
     // "no-console": "error",
   },
