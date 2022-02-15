@@ -69,6 +69,13 @@
       disabled: false,
     },
     {
+      icon: "mdi-earth",
+      text: "Vue Mastery Real World 3",
+      name: "",
+      route: "/realworldvue3",
+      disabled: false,
+    },
+    {
       icon: "mdi-grid",
       text: t("gridDemo"),
       name: "gridDemo",
