@@ -1,7 +1,6 @@
 /// <reference types="vitest" />
 
 import { defineConfig } from "vite";
-import eslintPlugin from "vite-plugin-eslint";
 import { resolve } from "path";
 import vue from "@vitejs/plugin-vue";
 
@@ -11,7 +10,7 @@ export default defineConfig({
       "@": resolve(__dirname, "src"),
     },
   },
-  plugins: [vue(), eslintPlugin()],
+  plugins: [vue()],
   define: {
     "process.env": {
       NODE_ENV: "production",
