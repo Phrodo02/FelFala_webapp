@@ -4,46 +4,46 @@ export default {
   namespaced: true,
   state: {
     loading: false,
-    numberOfPosts: 0,
-    posts: [],
+    numberOfRecipes: 0,
+    recipes: [],
   },
   getters: {
     getLoading(state) {
       return state.loading;
     },
-    getPosts(state) {
-      return state.posts;
+    getRecipes(state) {
+      return state.recipes;
     },
-    getNumberOfPosts(state) {
-      return state.numberOfPosts;
+    getNumberOfRecipes(state) {
+      return state.numberOfRecipes;
     },
   },
   mutations: {
     setLoading(state, status) {
       state.loading = status;
     },
-    setNumberOfPosts(state, numberOfPosts) {
-      state.numberOfPosts = numberOfPosts;
+    setNumberOfRecipes(state, numberOfRecipes) {
+      state.numberOfRecipes = numberOfRecipes;
     },
-    loadPosts(state, posts) {
-      state.posts = [...posts];
+    loadRecipes(state, recipes) {
+      state.recipes = [...recipes];
     },
-    clearPosts(state) {
-      state.posts = [];
+    clearRecipes(state) {
+      state.recipes = [];
     },
   },
   actions: {
-    async createNewPost(context, params) {
+    async createNewRecipe(context, params) {
       context.commit("setLoading", true);
       $axios
-        .post("posts", {
+        .post("recipes", {
           title: params.title,
           content: params.content,
         })
         .then((res) => {
           if (res && res.data) {
-            console.log(res.data.post);
-            context.commit("setNumberOfPosts", res.data.count);
+            console.log(res.data.recipe);
+            context.commit("setNumberOfRecipes", res.data.count);
           }
           context.commit("setLoading", false);
         })
@@ -52,10 +52,10 @@ export default {
           context.commit("setLoading", false);
         });
     },
-    async editPostById(context, params) {
+    async editRecipeById(context, params) {
       context.commit("setLoading", true);
       $axios
-        .patch(`posts/${params.id}`, {
+        .patch(`recipes/${params.id}`, {
           title: params.title,
           content: params.content,
         })
@@ -70,14 +70,14 @@ export default {
           context.commit("setLoading", false);
         });
     },
-    async deletePostById(context, params) {
+    async deleteRecipeById(context, params) {
       context.commit("setLoading", true);
       $axios
-        .delete(`posts/${params.id}`)
+        .delete(`recipes/${params.id}`)
         .then((res) => {
           if (res && res.data) {
             console.log(res.data.status);
-            context.commit("setNumberOfPosts", res.data.count);
+            context.commit("setNumberOfRecipes", res.data.count);
           }
           context.commit("setLoading", false);
         })
@@ -86,15 +86,15 @@ export default {
           context.commit("setLoading", false);
         });
     },
-    async fetchPosts(context) {
+    async fetchRecipes(context) {
       context.commit("setLoading", true);
       // await context.dispatch('fetchNumberOfPosts');
       $axios
-        .get("posts")
+        .get("recipes")
         .then((res) => {
           if (res && res.data) {
-            context.commit("loadPosts", res.data.posts);
-            context.commit("setNumberOfPosts", res.data.count);
+            context.commit("loadRecipes", res.data.recipes);
+            context.commit("setNumberOfRecipes", res.data.count);
           }
           context.commit("setLoading", false);
         })
@@ -103,17 +103,18 @@ export default {
           context.commit("setLoading", false);
         });
     },
-    async fetchPaginatedPosts(context, params) {
+    async fetchPaginatedRecipes(context, params) {
       context.commit("setLoading", true);
       // await context.dispatch('fetchNumberOfPosts');
       $axios
         .get(
-          `posts/${params.offset}/${params.limit}/${params.order}/${params.sort}/${params.keyword}`
+          `recipes/${params.offset}/${params.limit}/${params.order}/${params.sort}/${params.keyword}`
         )
         .then((res) => {
+          console.log(res);
           if (res && res.data) {
-            context.commit("loadPosts", res.data.posts);
-            context.commit("setNumberOfPosts", res.data.count);
+            context.commit("loadRecipes", res.data.recipes);
+            context.commit("setNumberOfRecipes", res.data.count);
           }
           context.commit("setLoading", false);
         })
