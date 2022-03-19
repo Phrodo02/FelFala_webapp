@@ -4,10 +4,10 @@
   import { useStore } from "vuex";
 
   const store = useStore();
-  const posts = computed(() => store.getters["posts/getPosts"]);
+  const posts = computed(() => store.getters["recipes"]);
 
   onMounted(() => {
-    store.dispatch("posts/fetchPosts");
+    store.dispatch("recipes/fetchPosts");
   });
 </script>
 

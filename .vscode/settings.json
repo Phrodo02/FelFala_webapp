@@ -1,6 +1,8 @@
 {
   "eslint.alwaysShowStatus": true,
-  "eslint.validate": ["typescript"],
+  "eslint.validate": [
+    "typescript"
+  ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[typescript]": {
@@ -9,7 +11,7 @@
   },
   "[vue]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "johnsoncodehk.volar"
   },
   "editor.minimap.enabled": false,
   "editor.wordWrap": "on",

@@ -1,25 +1,25 @@
 <script setup lang="ts">
   import { computed, onMounted, reactive, ref, watch } from "vue";
   import { VBtn, VCol, VContainer, VRow, VTextField } from "vuetify/components";
-  import EditPost from "../components/EditPost.vue";
-  import NewPost from "../components/NewPost.vue";
+  import EditRecipe from "../components/EditRecipe.vue";
+  import NewRecipe from "../components/NewRecipe.vue";
 
   import { useStore } from "vuex";
 
   import VueTableLite from "vue3-table-lite/ts";
 
   const store = useStore();
-  const posts = computed(() => store.getters["posts/getPosts"]);
-  const numberOfPosts = computed(() => store.getters["posts/getNumberOfPosts"]);
-  const isLoading = computed(() => store.getters["posts/getLoading"]);
+  const recipes = computed(() => store.getters["recipes/getRecipes"]);
+  const numberOfRecipes = computed(() => store.getters["recipes/getNumberOfRecipes"]);
+  const isLoading = computed(() => store.getters["recipes/getLoading"]);
   let refreshNeeding = false;
 
   let checkedRowsIds = [];
 
   const searchTerm = ref(""); // Search text
-  const showNewPostDialog = ref(false); // True if show new post
-  const showEditDialog = ref(false); // True if show edit post
-  const selectedPost = ref(Object);
+  const showNewRecipeDialog = ref(false); // True if show new recipe
+  const showEditDialog = ref(false); // True if show edit recipe
+  const selectedRecipe = ref(Object);
 
   watch(searchTerm, () => {
     doSearch(0, table.pageSize.toString(), table.sortable.order, table.sortable.sort);
@@ -27,7 +27,7 @@
 
   watch(isLoading, () => {
     if (refreshNeeding && !isLoading.value) {
-      while (table.offset >= numberOfPosts.value) {
+      while (table.offset >= numberOfRecipes.value) {
         table.offset -= table.pageSize;
       }
       doSearch(table.offset, table.pageSize.toString(), table.sortable.order, table.sortable.sort);
@@ -82,6 +82,24 @@
         },
       },
       {
+        label: "Meals Origin",
+        field: "mealsOrigin",
+        width: "55%",
+        sortable: true,
+        display: function (row) {
+          return row.mealsOrigin.slice(0, 71) + "...";
+        },
+      },
+      {
+        label: "Like",
+        field: "like",
+        width: "55%",
+        sortable: true,
+        display: function (row) {
+          return row.like;
+        },
+      },
+      {
         label: "E/D",
         field: "quick",
         width: "5%",
@@ -90,8 +108,8 @@
         },
       },
     ],
-    rows: posts,
-    totalRecordCount: numberOfPosts,
+    rows: recipes,
+    totalRecordCount: numberOfRecipes,
     sortable: {
       order: "title",
       sort: "asc",
@@ -106,7 +124,7 @@
     offset: 0,
   });
   const doSearch = (offset: number, limit: string, order: string, sort: string) => {
-    store.dispatch("posts/fetchPaginatedPosts", {
+    store.dispatch("recipes/fetchPaginatedRecipes", {
       offset: offset,
       limit: limit,
       order: order,
@@ -124,8 +142,8 @@
     Array.prototype.forEach.call(elements, function (element) {
       if (element.classList.contains("quick-btn")) {
         element.addEventListener("click", function () {
-          const selPost = posts.value.find((x) => x._id == element.dataset.id);
-          selectedPost.value = selPost;
+          const selRecipe = recipes.value.find((x) => x._id == element.dataset.id);
+          selectedRecipe.value = selRecipe;
           showEditDialog.value = true;
         });
       }
@@ -139,7 +157,7 @@
   };
 
   function createNewDocument() {
-    showNewPostDialog.value = true;
+    showNewRecipeDialog.value = true;
   }
 </script>
 
@@ -167,13 +185,17 @@
       @is-finished="tableLoadingFinish"
       @return-checked-rows="updateCheckedRows"
     ></VueTableLite>
-    <EditPost
+    <EditRecipe
       v-if="showEditDialog"
       v-model="showEditDialog"
-      :post="selectedPost"
+      :recipe="selectedRecipe"
       @close="closeDialogs"
-    ></EditPost>
-    <NewPost v-if="showNewPostDialog" v-model="showNewPostDialog" @close="closeDialogs"></NewPost>
+    ></EditRecipe>
+    <NewRecipe
+      v-if="showNewRecipeDialog"
+      v-model="showNewRecipeDialog"
+      @close="closeDialogs"
+    ></NewRecipe>
   </v-container>
 </template>
 
