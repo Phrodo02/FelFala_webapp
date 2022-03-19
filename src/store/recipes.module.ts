@@ -39,6 +39,8 @@ export default {
         .post("recipes", {
           title: params.title,
           content: params.content,
+          mealsOrigin: params.mealsOrigin,
+          like: params.like,
         })
         .then((res) => {
           if (res && res.data) {
@@ -111,7 +113,6 @@ export default {
           `recipes/${params.offset}/${params.limit}/${params.order}/${params.sort}/${params.keyword}`
         )
         .then((res) => {
-          console.log(res);
           if (res && res.data) {
             context.commit("loadRecipes", res.data.recipes);
             context.commit("setNumberOfRecipes", res.data.count);

@@ -36,16 +36,19 @@
 
   const title = ref("");
   const content = ref("");
+  const mealsOrigin = ref("");
 
   const showConfirmSave = ref(false);
   const showConfirmClose = ref(false);
   const resultConfirm = ref(false);
 
-  function confirmSavePost() {
+  function confirmSaveRecipe() {
     if (resultConfirm.value) {
-      store.dispatch("posts/createNewPost", {
+      store.dispatch("recipes/createNewRecipe", {
         title: title.value,
         content: content.value,
+        mealsOrigin: mealsOrigin.value,
+        like: 0,
       });
       show.value = false;
       emit("close");
@@ -79,10 +82,11 @@
   <v-row justify="center">
     <v-dialog v-model="show" persistent :retain-focus="false" transition="scale-transition">
       <v-card>
-        <v-card-title class="text-h5"> New post </v-card-title>
+        <v-card-title class="text-h5"> New recipe </v-card-title>
         <!-- <v-card-text>Post: {{ props.post }}</v-card-text> -->
         <v-text-field v-model="title" class="mb-1" label="Title"></v-text-field>
         <v-textarea v-model="content" filled label="Content" rows="6" shaped></v-textarea>
+        <v-text-field v-model="mealsOrigin" class="mb-1" label="Meals Origin"></v-text-field>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -102,7 +106,7 @@
       v-model="showConfirmSave"
       v-model:result="resultConfirm"
       title="Save changes"
-      @close="confirmSavePost"
+      @close="confirmSaveRecipe"
     />
     <ConfirmDialog
       v-if="showConfirmClose"

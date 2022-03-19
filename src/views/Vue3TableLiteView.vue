@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { computed, onMounted, reactive, ref, watch } from "vue";
   import { VBtn, VCol, VContainer, VRow, VTextField } from "vuetify/components";
-  import EditPost from "../components/EditPost.vue";
-  import NewPost from "../components/NewPost.vue";
+  import EditRecipe from "../components/EditRecipe.vue";
+  import NewRecipe from "../components/NewRecipe.vue";
 
   import { useStore } from "vuex";
 
   import VueTableLite from "vue3-table-lite/ts";
 
   const store = useStore();
-  const recipes = computed(() => store.getters["recipes"]);
+  const recipes = computed(() => store.getters["recipes/getRecipes"]);
   const numberOfRecipes = computed(() => store.getters["recipes/getNumberOfRecipes"]);
   const isLoading = computed(() => store.getters["recipes/getLoading"]);
   let refreshNeeding = false;
@@ -17,8 +17,8 @@
   let checkedRowsIds = [];
 
   const searchTerm = ref(""); // Search text
-  const showNewRecipeDialog = ref(false); // True if show new post
-  const showEditDialog = ref(false); // True if show edit post
+  const showNewRecipeDialog = ref(false); // True if show new recipe
+  const showEditDialog = ref(false); // True if show edit recipe
   const selectedRecipe = ref(Object);
 
   watch(searchTerm, () => {
@@ -37,7 +37,6 @@
 
   onMounted(() => {
     doSearch(0, "10", "title", "asc");
-    console.log(recipes);
   });
 
   function closeDialogs() {
@@ -80,6 +79,24 @@
         sortable: true,
         display: function (row) {
           return row.content.slice(0, 71) + "...";
+        },
+      },
+      {
+        label: "Meals Origin",
+        field: "mealsOrigin",
+        width: "55%",
+        sortable: true,
+        display: function (row) {
+          return row.mealsOrigin.slice(0, 71) + "...";
+        },
+      },
+      {
+        label: "Like",
+        field: "like",
+        width: "55%",
+        sortable: true,
+        display: function (row) {
+          return row.like;
         },
       },
       {
@@ -168,13 +185,17 @@
       @is-finished="tableLoadingFinish"
       @return-checked-rows="updateCheckedRows"
     ></VueTableLite>
-    <EditPost
+    <EditRecipe
       v-if="showEditDialog"
       v-model="showEditDialog"
-      :post="selectedRecipe"
+      :recipe="selectedRecipe"
       @close="closeDialogs"
-    ></EditPost>
-    <NewPost v-if="showNewRecipeDialog" v-model="showNewRecipeDialog" @close="closeDialogs"></NewPost>
+    ></EditRecipe>
+    <NewRecipe
+      v-if="showNewRecipeDialog"
+      v-model="showNewRecipeDialog"
+      @close="closeDialogs"
+    ></NewRecipe>
   </v-container>
 </template>
 
