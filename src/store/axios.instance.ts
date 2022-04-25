@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const $axios = axios.create({
-  baseURL: "https://felfala.herokuapp.com/",
+  baseURL: "https://funny-kitten-f9e649.netlify.app/",
   withCredentials: true,
 });
 
